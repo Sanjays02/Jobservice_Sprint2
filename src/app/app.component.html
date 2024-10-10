@@ -1,0 +1,160 @@
+<div class="container">
+  <div style="height: 100vh;">
+    <div class="d-flex justify-content-center align-items-center h-100">
+      <div class="shadow p-5">
+        <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+          <h4 class="display-6 text-center py-2">Job Database</h4>
+
+          <div class="mb-3">
+            <label for="company" class="form-label">Company Name</label>
+            <input id="company" required #company="ngModel" ngModel name="company" type="text"
+              class="form-control" placeholder="Enter company name">
+            <div *ngIf="company.invalid && company.touched">
+              <small class="text-danger" *ngIf="company.errors?.['required']">Required</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="title" class="form-label">Job Title</label>
+            <input id="title" required #title="ngModel" ngModel name="title" type="text"
+              class="form-control" placeholder="Enter job title">
+            <div *ngIf="title.invalid && title.touched">
+              <small class="text-danger" *ngIf="title.errors?.['required']">Required</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input id="location" required #location="ngModel" ngModel name="location" type="text"
+              class="form-control" placeholder="Enter job location">
+            <div *ngIf="location.invalid && location.touched">
+              <small class="text-danger" *ngIf="location.errors?.['required']">Required</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="salary" class="form-label">Salary</label>
+            <input id="salary" required #salary="ngModel" ngModel name="salary" type="number"
+              class="form-control" placeholder="Enter salary amount">
+            <div *ngIf="salary.invalid && salary.touched">
+              <small class="text-danger" *ngIf="salary.errors?.['required']">Required</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label">Job Description</label>
+            <textarea id="description" required #description="ngModel" ngModel name="description"
+              class="form-control" placeholder="Enter job description"></textarea>
+            <div *ngIf="description.invalid && description.touched">
+              <small class="text-danger" *ngIf="description.errors?.['required']">Required</small>
+            </div>
+          </div>
+
+          <div class="form-group text-center">
+            <input class="btn btn-primary" type="submit" value="Submit">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div class="mt-5">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Company Name</th>
+          <th>Job Title</th>
+          <th>Location</th>
+          <th>Salary</th>
+          <th>Description</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let job of jobDetails">
+          <td>{{job.id}}</td>
+          <td>{{job.company}}</td>
+          <td>{{job.title}}</td>
+          <td>{{job.location}}</td>
+          <td>{{job.salary}}</td>
+          <td>{{job.description}}</td>
+          <td>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" (click)="edit(job)">Edit</button>
+          </td>
+          <td>
+            <button type="button" class="btn btn-danger" (click)="deleteJob(job.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="updateModalLabel">Update Job</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #updateForm="ngForm" (ngSubmit)="updateJob()">
+            <h4 class="display-6 text-center py-2">Update Job</h4>
+
+            <div class="mb-3">
+              <label for="companyName" class="form-label">Company Name</label>
+              <input id="companyName" required #companyName="ngModel" [(ngModel)]="jobToUpdate.company" name="company" type="text"
+                class="form-control" placeholder="Enter company name">
+              <div *ngIf="companyName.invalid && companyName.touched">
+                <small class="text-danger" *ngIf="companyName.errors?.['required']">Required</small>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="title" class="form-label">Job Title</label>
+              <input id="title" required #title="ngModel" [(ngModel)]="jobToUpdate.title" name="title" type="text"
+                class="form-control" placeholder="Enter job title">
+              <div *ngIf="title.invalid && title.touched">
+                <small class="text-danger" *ngIf="title.errors?.['required']">Required</small>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="location" class="form-label">Location</label>
+              <input id="location" required #location="ngModel" [(ngModel)]="jobToUpdate.location" name="location" type="text"
+                class="form-control" placeholder="Enter job location">
+              <div *ngIf="location.invalid && location.touched">
+                <small class="text-danger" *ngIf="location.errors?.['required']">Required</small>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="salary" class="form-label">Salary</label>
+              <input id="salary" required #salary="ngModel" [(ngModel)]="jobToUpdate.salary" name="salary" type="number"
+                class="form-control" placeholder="Enter salary amount">
+              <div *ngIf="salary.invalid && salary.touched">
+                <small class="text-danger" *ngIf="salary.errors?.['required']">Required</small>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Job Description</label>
+              <textarea id="description" required #description="ngModel" [(ngModel)]="jobToUpdate.description" name="description"
+                class="form-control" placeholder="Enter job description"></textarea>
+              <div *ngIf="description.invalid && description.touched">
+                <small class="text-danger" *ngIf="description.errors?.['required']">Required</small>
+              </div>
+            </div>
+
+            <div class="form-group text-center">
+              <input class="btn btn-primary" type="submit" value="Update">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
